@@ -6,7 +6,7 @@
 /*   By: nbenhami <nbenhami@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 20:13:44 by nbenhami          #+#    #+#             */
-/*   Updated: 2025/03/02 21:03:03 by nbenhami         ###   ########.fr       */
+/*   Updated: 2025/03/02 21:26:43 by nbenhami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	*philo_routine(void *arg)
 		check_philo_routine(philo);
 	return (NULL);
 }
+
 /*-------------------- MONITOR ROUTINES -------------------*/
 int	check_philo(t_simulation *sim, int *all_eaten)
 {
@@ -76,7 +77,7 @@ int	check_philo(t_simulation *sim, int *all_eaten)
 			return (1);
 		}
 		if (sim->nbr_to_eat != -1
-				&& sim->philos[i].meals_eaten >= sim->nbr_to_eat)
+			&& sim->philos[i].meals_eaten >= sim->nbr_to_eat)
 			(*all_eaten)++;
 		pthread_mutex_unlock(&sim->meal_check_mutex);
 		i++;

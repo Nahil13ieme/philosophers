@@ -6,7 +6,7 @@
 /*   By: nbenhami <nbenhami@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 21:15:22 by nbenhami          #+#    #+#             */
-/*   Updated: 2025/03/02 20:23:27 by nbenhami         ###   ########.fr       */
+/*   Updated: 2025/03/02 21:27:50 by nbenhami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ int	main(int argc, char *argv[])
 	if (argc != 5 && argc != 6)
 	{
 		write(1, "Error: wrong number of arguments\n", 34);
-		write(1, "Usage: ./philo <number_of_philos> <time_to_die> <time_to_eat> <time_to_sleep> [number_of_meals]\n", 97);
+		write(1, "Usage: ./philo <number_of_philos> <time_to_die>", 48);
+		write(1, " <time_to_eat> <time_to_sleep> [number_of_meals]\n", 50);
 		return (1);
 	}
 	if (!check_args(argc, argv))
