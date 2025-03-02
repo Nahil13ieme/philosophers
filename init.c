@@ -6,7 +6,7 @@
 /*   By: nbenhami <nbenhami@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 13:18:38 by nbenhami          #+#    #+#             */
-/*   Updated: 2025/03/02 17:42:50 by nbenhami         ###   ########.fr       */
+/*   Updated: 2025/03/02 20:08:39 by nbenhami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,16 @@ void	init_philo(t_simulation *sim)
 	while (i < sim->nbr_of_philos)
 	{
 		sim->philos[i].id = i + 1;
-		sim->philos[i].meals_eaten = 0;		
+		sim->philos[i].meals_eaten = 0;
 		sim->philos[i].nbr_to_eat = sim->nbr_to_eat;
 		sim->philos[i].sim = sim;
 		sim->philos[i].left_fork = &sim->forks[i];
+		sim->philos[i].last_eat = 0;
 		if (sim->nbr_of_philos == 1)
 			sim->philos[i].right_fork = NULL;
 		else
-			sim->philos[i].right_fork = &sim->forks[(i + 1) % sim->nbr_of_philos];
+			sim->philos[i].right_fork = &sim->forks[(i + 1)
+				% sim->nbr_of_philos];
 		i++;
 	}
 }
@@ -56,7 +58,8 @@ void	init_thread(t_simulation *sim)
 	sim->start_time = get_time_in_ms();
 	while (i < sim->nbr_of_philos)
 	{
-		error = pthread_create(&sim->philos[i].thread, NULL, philo_routine, &sim->philos[i]);
+		error = pthread_create(&sim->philos[i].thread, NULL,
+				philo_routine, &sim->philos[i]);
 		if (error)
 			exit(EXIT_FAILURE);
 		i++;
@@ -73,6 +76,7 @@ void	init_sim(t_simulation *sim, int argc, char **argv)
 	sim->time_to_eat = ft_atoi(argv[3]);
 	sim->time_to_sleep = ft_atoi(argv[4]);
 	sim->nbr_to_eat = -1;
+	sim->stop = 0;
 	if (argc == 6)
 		sim->nbr_to_eat = ft_atoi(argv[5]);
 	sim->forks = malloc(sizeof(pthread_mutex_t) * sim->nbr_of_philos);
@@ -82,4 +86,17 @@ void	init_sim(t_simulation *sim, int argc, char **argv)
 	init_mutex(sim);
 	init_philo(sim);
 	init_thread(sim);
+}
+
+void	join_thread(t_simulation *sim)
+{
+	int	i;
+
+	i = 0;
+	while (i < sim->nbr_of_philos)
+	{
+		pthread_join(sim->philos[i].thread, NULL);
+		i++;
+	}
+	pthread_join(sim->monitor_thread, NULL);
 }

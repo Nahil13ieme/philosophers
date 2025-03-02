@@ -6,7 +6,7 @@
 /*   By: nbenhami <nbenhami@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 18:14:27 by nbenhami          #+#    #+#             */
-/*   Updated: 2025/03/02 18:14:33 by nbenhami         ###   ########.fr       */
+/*   Updated: 2025/03/02 20:30:14 by nbenhami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,24 @@ void	take_forks(t_philo *philo)
 	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(philo->right_fork);
-		print_message(philo, "has taken a fork");
+		print_message(philo, "has taken a fork", MAGENTA);
 		pthread_mutex_lock(philo->left_fork);
-		print_message(philo, "has taken a fork");
+		print_message(philo, "has taken a fork", MAGENTA);
 	}
 	else
 	{
 		pthread_mutex_lock(philo->left_fork);
-		print_message(philo, "has taken a fork");
+		print_message(philo, "has taken a fork", MAGENTA);
 		if (philo->sim->nbr_of_philos == 1)
 			return ;
 		pthread_mutex_lock(philo->right_fork);
-		print_message(philo, "has taken a fork");
+		print_message(philo, "has taken a fork", MAGENTA);
 	}
 }
 
 void	eat(t_philo *philo)
 {
-	print_message(philo, "is eating");
+	print_message(philo, "is eating", GREEN);
 	sleep_ms(philo->sim->time_to_eat);
 	pthread_mutex_lock(&philo->sim->meal_check_mutex);
 	philo->last_eat = get_time_in_ms();
@@ -47,11 +47,21 @@ void	eat(t_philo *philo)
 
 void	philo_sleep(t_philo *philo)
 {
-	print_message(philo, "is sleeping");
+	print_message(philo, "is sleeping", YELLOW);
 	sleep_ms(philo->sim->time_to_sleep);
 }
 
 void	think(t_philo *philo)
 {
-	print_message(philo, "is thinking");
+	print_message(philo, "is thinking", BLUE);
+}
+
+int	check_sim_stop(t_simulation *sim)
+{
+	int	stop;
+
+	pthread_mutex_lock(&sim->stop_mutex);
+	stop = sim->stop;
+	pthread_mutex_unlock(&sim->stop_mutex);
+	return (stop);
 }
