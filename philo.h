@@ -6,7 +6,7 @@
 /*   By: nbenhami <nbenhami@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:14:29 by nbenhami          #+#    #+#             */
-/*   Updated: 2025/03/02 20:29:16 by nbenhami         ###   ########.fr       */
+/*   Updated: 2025/03/02 21:00:38 by nbenhami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,6 @@ void	join_thread(t_simulation *sim);
 /*-------------- Main ---------------*/
 //staitic int	check_args(int argc, char **argv);
 //int			main(int argc, char **argv);
-void	*philo_routine(void *arg);
-void	*monitor_routine(void *arg);
 
 /*--------- PHILO ROUTINES ----------*/
 void	take_forks(t_philo *philo);

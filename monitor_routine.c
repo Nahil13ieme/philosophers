@@ -6,7 +6,7 @@
 /*   By: nbenhami <nbenhami@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 20:13:44 by nbenhami          #+#    #+#             */
-/*   Updated: 2025/03/02 20:39:55 by nbenhami         ###   ########.fr       */
+/*   Updated: 2025/03/02 21:03:03 by nbenhami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ int	check_philo(t_simulation *sim, int *all_eaten)
 			pthread_mutex_lock(&sim->print_mutex);
 			print_message(&sim->philos[i], "died", RED);
 			pthread_mutex_unlock(&sim->print_mutex);
-			(*all_eaten) = -1;
 			return (1);
 		}
 		if (sim->nbr_to_eat != -1
