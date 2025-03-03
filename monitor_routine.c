@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor_routine.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenhami <nbenhami@student.42perpignan.    +#+  +:+       +#+        */
+/*   By: nbenhami <nbenhami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 20:13:44 by nbenhami          #+#    #+#             */
-/*   Updated: 2025/03/02 21:26:43 by nbenhami         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:01:26 by nbenhami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,15 @@ void	check_philo_routine(t_philo *philo)
 {
 	while (!check_sim_stop(philo->sim))
 	{
-		sleep_ms(1);
+		usleep(500);
+		think(philo);
 		take_forks(philo);
-		if (check_sim_stop(philo->sim))
-		{
-			pthread_mutex_unlock(philo->left_fork);
-			pthread_mutex_unlock(philo->right_fork);
-			break ;
-		}
 		eat(philo);
 		if (check_sim_stop(philo->sim))
 			break ;
 		philo_sleep(philo);
 		if (check_sim_stop(philo->sim))
 			break ;
-		think(philo);
 	}
 }
 
@@ -40,16 +34,19 @@ void	*philo_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	pthread_mutex_lock(&philo->sim->meal_check_mutex);
-	philo->last_eat = get_time_in_ms();
-	pthread_mutex_unlock(&philo->sim->meal_check_mutex);
+	if (philo->id % 2 == 1)
+		usleep(50);
 	if (philo->sim->nbr_of_philos == 1)
 	{
+		pthread_mutex_lock(&philo->sim->meal_check_mutex);
+		philo->last_eat = get_time_in_ms();
+		pthread_mutex_unlock(&philo->sim->meal_check_mutex);
 		think(philo);
 		take_forks(philo);
-		pthread_mutex_unlock(philo->left_fork);
 		while (!check_sim_stop(philo->sim))
-			usleep(100);
+		{
+			usleep(10);
+		}
 	}
 	else
 		check_philo_routine(philo);
@@ -57,29 +54,39 @@ void	*philo_routine(void *arg)
 }
 
 /*-------------------- MONITOR ROUTINES -------------------*/
+
+static int	check_last_meal(t_simulation *sim, int index)
+{
+	long	last_eat;
+	int		is_initialized;
+
+	pthread_mutex_lock(&sim->meal_check_mutex);
+	last_eat = get_time_in_ms() - sim->philos[index].last_eat;
+	is_initialized = sim->philos[index].last_eat > 0;
+	pthread_mutex_unlock(&sim->meal_check_mutex);
+	if (is_initialized && last_eat > sim->time_to_die)
+	{
+		print_message(&sim->philos[index], "died", RED);
+		pthread_mutex_lock(&sim->stop_mutex);
+		sim->stop = 1;
+		pthread_mutex_unlock(&sim->stop_mutex);
+		return (0);
+	}
+	return (1);
+}
+
 int	check_philo(t_simulation *sim, int *all_eaten)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	while (i < sim->nbr_of_philos)
 	{
-		pthread_mutex_lock(&sim->meal_check_mutex);
-		if (get_time_in_ms() - sim->philos[i].last_eat > sim->time_to_die)
-		{
-			pthread_mutex_lock(&sim->stop_mutex);
-			sim->stop = 1;
-			pthread_mutex_unlock(&sim->stop_mutex);
-			pthread_mutex_unlock(&sim->meal_check_mutex);
-			pthread_mutex_lock(&sim->print_mutex);
-			print_message(&sim->philos[i], "died", RED);
-			pthread_mutex_unlock(&sim->print_mutex);
-			return (1);
-		}
+		if (!check_last_meal(sim, i))
+			return (0);
 		if (sim->nbr_to_eat != -1
 			&& sim->philos[i].meals_eaten >= sim->nbr_to_eat)
 			(*all_eaten)++;
-		pthread_mutex_unlock(&sim->meal_check_mutex);
 		i++;
 	}
 	return (0);
@@ -91,6 +98,7 @@ void	*monitor_routine(void *arg)
 	int				all_eaten;
 
 	sim = (t_simulation *)arg;
+	usleep(sim->nbr_of_philos * 10);
 	while (!sim->stop)
 	{
 		all_eaten = 0;

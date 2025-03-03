@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenhami <nbenhami@student.42perpignan.    +#+  +:+       +#+        */
+/*   By: nbenhami <nbenhami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 13:18:17 by nbenhami          #+#    #+#             */
-/*   Updated: 2025/03/02 21:12:46 by nbenhami         ###   ########.fr       */
+/*   Updated: 2025/03/03 14:30:46 by nbenhami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,18 @@ int	ft_atoi(char *str)
 
 void	print_message(t_philo *philo, char *message, int color)
 {
-	pthread_mutex_lock(&philo->sim->print_mutex);
-	printf("\033[%dm%ld %d %s\033[0m\n",
-		color,
-		get_time_in_ms() - philo->sim->start_time,
-		philo->id,
-		message);
-	pthread_mutex_unlock(&philo->sim->print_mutex);
+	if (check_sim_stop(philo->sim))
+		return ;
+	else
+	{
+		pthread_mutex_lock(&philo->sim->print_mutex);
+		printf("\033[%dm%ld %d %s\033[0m\n",
+			color,
+			get_time_in_ms() - philo->sim->start_time,
+			philo->id,
+			message);
+		pthread_mutex_unlock(&philo->sim->print_mutex);
+	}
 }
 
 void	free_sim(t_simulation *sim)
