@@ -6,7 +6,7 @@
 /*   By: nbenhami <nbenhami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 18:14:27 by nbenhami          #+#    #+#             */
-/*   Updated: 2025/03/03 14:32:06 by nbenhami         ###   ########.fr       */
+/*   Updated: 2025/03/03 18:12:37 by nbenhami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	take_forks(t_philo *philo)
 {
-	if (philo->id % 2 == 0)
+	if (philo->id % 2 == 1)
 	{
 		pthread_mutex_lock(philo->right_fork);
 		print_message(philo, "has taken a fork", MAGENTA);

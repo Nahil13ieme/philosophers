@@ -6,7 +6,7 @@
 /*   By: nbenhami <nbenhami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 20:13:44 by nbenhami          #+#    #+#             */
-/*   Updated: 2025/03/03 16:01:26 by nbenhami         ###   ########.fr       */
+/*   Updated: 2025/03/03 17:50:20 by nbenhami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ static int	check_last_meal(t_simulation *sim, int index)
 		pthread_mutex_lock(&sim->stop_mutex);
 		sim->stop = 1;
 		pthread_mutex_unlock(&sim->stop_mutex);
+		printf("TIMESPTAN = %ld \n", last_eat);
 		return (0);
 	}
 	return (1);
