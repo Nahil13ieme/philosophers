@@ -6,7 +6,7 @@
 /*   By: nbenhami <nbenhami@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 22:14:29 by nbenhami          #+#    #+#             */
-/*   Updated: 2025/03/02 21:00:38 by nbenhami         ###   ########.fr       */
+/*   Updated: 2025/03/05 17:59:27 by nbenhami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <string.h>
 
 # define RED 31
+# define CYAN 36
 # define GREEN 32
 # define YELLOW 33
 # define BLUE 34

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbenhami <nbenhami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nbenhami <nbenhami@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 13:18:17 by nbenhami          #+#    #+#             */
-/*   Updated: 2025/03/03 14:30:46 by nbenhami         ###   ########.fr       */
+/*   Updated: 2025/03/05 17:58:44 by nbenhami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,15 @@ long	get_time_in_ms(void)
 	struct timeval	tv;
 
 	gettimeofday(&tv, NULL);
-	return (tv.tv_sec * 1000L + tv.tv_usec / 1000);
+	return ((tv.tv_sec * 1000L) + (tv.tv_usec / 1000));
 }
 
 /* Sleeps approximately ms milliseconds */
 void	sleep_ms(long ms)
 {
-	usleep(ms * 1000);
+	long start = get_time_in_ms();
+    while (get_time_in_ms() - start < ms)
+        usleep(100);
 }
 
 int	ft_atoi(char *str)
