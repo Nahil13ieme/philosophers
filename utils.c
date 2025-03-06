@@ -6,7 +6,7 @@
 /*   By: nbenhami <nbenhami@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 13:18:17 by nbenhami          #+#    #+#             */
-/*   Updated: 2025/03/05 17:58:44 by nbenhami         ###   ########.fr       */
+/*   Updated: 2025/03/06 12:47:24 by nbenhami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,11 @@ long	get_time_in_ms(void)
 /* Sleeps approximately ms milliseconds */
 void	sleep_ms(long ms)
 {
-	long start = get_time_in_ms();
-    while (get_time_in_ms() - start < ms)
-        usleep(100);
+	long	start;
+
+	start = get_time_in_ms();
+	while ((get_time_in_ms() - start) < ms)
+		usleep(100);
 }
 
 int	ft_atoi(char *str)

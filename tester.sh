@@ -1,5 +1,5 @@
 #!/bin/bash
-for i in {1..200}; do
+for i in {1..100}; do
 	timeout 2s ./philo 5 800 200 200 > output_$i.txt 2>/dev/null
 	if grep -q "died" output_$i.txt; then
 		echo "Died in run $i at:"

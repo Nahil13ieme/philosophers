@@ -6,7 +6,7 @@
 /*   By: nbenhami <nbenhami@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 18:14:27 by nbenhami          #+#    #+#             */
-/*   Updated: 2025/03/05 20:19:10 by nbenhami         ###   ########.fr       */
+/*   Updated: 2025/03/06 12:46:41 by nbenhami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	take_forks(t_philo *philo)
 {
-	pthread_mutex_t *first;
-	pthread_mutex_t *second;
+	pthread_mutex_t	*first;
+	pthread_mutex_t	*second;
 
 	if (philo->left_fork < philo->right_fork)
 	{
@@ -60,7 +60,7 @@ void	think(t_philo *philo)
 int	check_sim_stop(t_simulation *sim)
 {
 	int	stop;
-	
+
 	pthread_mutex_lock(&sim->stop_mutex);
 	stop = sim->stop;
 	pthread_mutex_unlock(&sim->stop_mutex);
